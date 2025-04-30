@@ -2,7 +2,7 @@ package com.adhika.reposcope.di
 
 import com.adhika.reposcope.domain.repository.GitHubRepository
 import com.adhika.reposcope.domain.usecase.GetUserDetailUseCase
-import com.adhika.reposcope.domain.usecase.GetUserReposUseCase
+import com.adhika.reposcope.domain.usecase.GetUserReposPagingUseCase
 import com.adhika.reposcope.domain.usecase.SearchUsersUseCase
 import dagger.Module
 import dagger.Provides
@@ -25,6 +25,6 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetUserReposUseCase(repository: GitHubRepository): GetUserReposUseCase =
-        GetUserReposUseCase(repository)
+    fun provideGetUserReposUseCase(repository: GitHubRepository): GetUserReposPagingUseCase =
+        GetUserReposPagingUseCase(repository)
 }

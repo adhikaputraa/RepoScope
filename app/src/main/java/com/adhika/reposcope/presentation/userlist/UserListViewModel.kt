@@ -7,13 +7,12 @@ import androidx.paging.cachedIn
 import com.adhika.reposcope.domain.model.GitHubUser
 import com.adhika.reposcope.domain.usecase.SearchUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +29,8 @@ class UserListViewModel @Inject constructor(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val pagingDataFlow: Flow<PagingData<GitHubUser>> = _activeQuery
+        .debounce(400)
         .filter { it.isNotBlank() }
         .flatMapLatest { query ->
             searchUsersUseCase.paging(query)

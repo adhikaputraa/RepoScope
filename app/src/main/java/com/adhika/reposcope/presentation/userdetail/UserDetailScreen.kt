@@ -1,4 +1,4 @@
-package com.adhika.reposcope
+package com.adhika.reposcope.presentation.userdetail
 
 import android.content.Intent
 import android.net.Uri
@@ -22,9 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,16 +33,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,8 +48,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.adhika.reposcope.presentation.common.InlineErrorWithRetry
 import com.adhika.reposcope.presentation.common.LoadingItem
-import com.adhika.reposcope.presentation.userdetail.UserDetailUiState
-import com.adhika.reposcope.presentation.userdetail.UserDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,8 +64,6 @@ fun UserDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
     val reposPager = viewModel.reposFlow.collectAsLazyPagingItems()
     val context = LocalContext.current
-    val languages by viewModel.languages.collectAsState()
-    val selectedLanguage by viewModel.selectedLanguage.collectAsState()
 
     Scaffold(
         topBar = {
@@ -220,57 +209,13 @@ fun UserDetailScreen(
                             color = Color(0xFF222222),
                             modifier = Modifier.padding(start = 20.dp, bottom = 8.dp)
                         )
-                        // Language filter dropdown
-                        if (languages.isNotEmpty()) {
-                            var expanded by remember { mutableStateOf(false) }
-                            Box(Modifier.padding(start = 20.dp, end = 20.dp, bottom = 8.dp)) {
-                                // Use standard Material3 DropdownMenu instead of ExposedDropdownMenu
-                                androidx.compose.material3.TextField(
-                                    value = selectedLanguage ?: "All languages",
-                                    onValueChange = {},
-                                    readOnly = true,
-                                    label = { Text("Filter by language") },
-                                    trailingIcon = {
-                                        IconButton(onClick = { expanded = !expanded }) {
-                                            Icon(
-                                                imageVector = Icons.Default.ArrowBack, // Use a suitable dropdown icon
-                                                contentDescription = null
-                                            )
-                                        }
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                DropdownMenu(
-                                    expanded = expanded,
-                                    onDismissRequest = { expanded = false },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    DropdownMenuItem(
-                                        text = { Text("All languages") },
-                                        onClick = {
-                                            viewModel.onLanguageSelected(null)
-                                            expanded = false
-                                        }
-                                    )
-                                    languages.forEach { lang ->
-                                        DropdownMenuItem(
-                                            text = { Text(lang) },
-                                            onClick = {
-                                                viewModel.onLanguageSelected(lang)
-                                                expanded = false
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        }
                     }
                     // Repositories
                     items(
                         count = reposPager.itemCount,
                         key = { index ->
                             val repo = reposPager[index]
-                            if (repo != null) repo.htmlUrl else index
+                            repo?.htmlUrl ?: index
                         }
                     ) { index ->
                         val repo = reposPager[index] ?: return@items

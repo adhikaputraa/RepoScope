@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -56,6 +58,7 @@ fun UserDetailScreen(
     username: String,
     avatarUrl: String? = null,
     viewModel: UserDetailViewModel = hiltViewModel(),
+    repoFavoriteViewModel: RepoFavoriteViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {}
 ) {
     LaunchedEffect(username) {
@@ -220,6 +223,7 @@ fun UserDetailScreen(
                         }
                     ) { index ->
                         val repo = reposPager[index] ?: return@items
+                        val isFavorite = repoFavoriteViewModel.favoriteState.collectAsState().value[repo.htmlUrl] ?: false
                         androidx.compose.material3.Card(
                             shape = RoundedCornerShape(16.dp),
                             colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -243,6 +247,16 @@ fun UserDetailScreen(
                                         overflow = TextOverflow.Ellipsis,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
+                                    IconButton(onClick = {
+                                        if (isFavorite) repoFavoriteViewModel.removeFavorite(repo.htmlUrl)
+                                        else repoFavoriteViewModel.addFavorite(repo, user.username)
+                                    }) {
+                                        Icon(
+                                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                                            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.Gray
+                                        )
+                                    }
                                     Icon(
                                         Icons.Default.Star,
                                         contentDescription = null,
@@ -259,6 +273,9 @@ fun UserDetailScreen(
                                     Text(it, color = Color(0xFF888888), fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
                             }
+                        }
+                        LaunchedEffect(repo.htmlUrl) {
+                            repoFavoriteViewModel.checkFavorite(repo.htmlUrl)
                         }
                     }
                     // Loading/Error states (unchanged)

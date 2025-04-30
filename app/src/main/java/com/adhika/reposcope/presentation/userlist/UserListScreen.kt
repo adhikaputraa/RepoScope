@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -57,7 +58,8 @@ import androidx.compose.material3.MaterialTheme
 @Composable
 fun UserListScreen(
     viewModel: UserListViewModel = hiltViewModel(),
-    onUserClick: (username: String, avatarUrl: String?) -> Unit
+    onUserClick: (username: String, avatarUrl: String?) -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     val pendingQuery by viewModel.pendingQuery.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
@@ -70,6 +72,15 @@ fun UserListScreen(
         topBar = {
             TopAppBar(
                 title = { Text("GitHub Users", color = Color.White) },
+                actions = {
+                    IconButton(onClick = onFavoriteClick) {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = "Favorite Repos",
+                            tint = Color.White
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
             )
         },

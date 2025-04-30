@@ -13,14 +13,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = BluePrimary,
-    secondary = BlueLight,
-    background = BlueBackground,
-    surface = CardBackground,
+    primary = DarkBluePrimary,
+    secondary = DarkBlueLight,
+    background = DarkBackground,
+    surface = DarkCardBackground,
     onPrimary = Color.White,
     onSecondary = Color.White,
-    onBackground = TextPrimary,
-    onSurface = TextPrimary
+    onBackground = DarkTextPrimary,
+    onSurface = DarkTextPrimary,
+    surfaceVariant = DarkSearchFieldBackground
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -31,7 +32,8 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     onSecondary = Color.White,
     onBackground = TextPrimary,
-    onSurface = TextPrimary
+    onSurface = TextPrimary,
+    surfaceVariant = SearchFieldBackground
 )
 
 @Composable

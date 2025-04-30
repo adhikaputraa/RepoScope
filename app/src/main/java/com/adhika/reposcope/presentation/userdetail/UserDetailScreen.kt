@@ -25,6 +25,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -74,10 +75,10 @@ fun UserDetailScreen(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF1976D2))
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
             )
         },
-        containerColor = Color(0xFFF7F7F8)
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         when (uiState) {
             is UserDetailUiState.Loading -> {
@@ -101,7 +102,7 @@ fun UserDetailScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(padding)
-                            .background(Color(0xFFF7F7F8))
+                            .background(MaterialTheme.colorScheme.background)
                     ) {
                         item {
                             // Header (same as success, but with error data)
@@ -109,7 +110,7 @@ fun UserDetailScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(Color.White, RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
                                     .padding(top = 32.dp, bottom = 28.dp)
                             ) {
                                 if (errorState.avatarUrl != null) {
@@ -120,7 +121,7 @@ fun UserDetailScreen(
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
                                 }
-                                Text(errorState.username, fontWeight = FontWeight.Bold, fontSize = 24.sp, color = Color(0xFF222222))
+                                Text(errorState.username, fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
                                 Spacer(modifier = Modifier.height(14.dp))
                                 Row(
                                     horizontalArrangement = Arrangement.Center,
@@ -128,12 +129,12 @@ fun UserDetailScreen(
                                 ) {
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                         Text("Followers", color = Color(0xFF888888), fontSize = 13.sp)
-                                        Text("-", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1976D2))
+                                        Text("-", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)
                                     }
                                     Spacer(modifier = Modifier.width(36.dp))
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                         Text("Following", color = Color(0xFF888888), fontSize = 13.sp)
-                                        Text("-", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1976D2))
+                                        Text("-", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)
                                     }
                                 }
                             }
@@ -142,7 +143,7 @@ fun UserDetailScreen(
                                 "Repositories",
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 18.sp,
-                                color = Color(0xFF222222),
+                                color = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.padding(start = 20.dp, bottom = 8.dp)
                             )
                         }
@@ -162,7 +163,7 @@ fun UserDetailScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
-                        .background(Color(0xFFF7F7F8))
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
                     item {
                         // Header
@@ -170,7 +171,7 @@ fun UserDetailScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color.White, RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
                                 .padding(top = 32.dp, bottom = 28.dp)
                         ) {
                             AsyncImage(
@@ -181,7 +182,7 @@ fun UserDetailScreen(
                                     .clip(CircleShape)
                             )
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(user.username, fontWeight = FontWeight.Bold, fontSize = 24.sp, color = Color(0xFF222222))
+                            Text(user.username, fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
                             user.fullName?.let {
                                 Text(it, color = Color(0xFF888888), fontSize = 16.sp, fontWeight = FontWeight.Medium)
                             }
@@ -192,12 +193,12 @@ fun UserDetailScreen(
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text("Followers", color = Color(0xFF888888), fontSize = 13.sp)
-                                    Text("${user.followers}", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1976D2))
+                                    Text("${user.followers}", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)
                                 }
                                 Spacer(modifier = Modifier.width(36.dp))
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text("Following", color = Color(0xFF888888), fontSize = 13.sp)
-                                    Text("${user.following}", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF1976D2))
+                                    Text("${user.following}", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)
                                 }
                             }
                         }
@@ -206,7 +207,7 @@ fun UserDetailScreen(
                             "Repositories",
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 18.sp,
-                            color = Color(0xFF222222),
+                            color = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.padding(start = 20.dp, bottom = 8.dp)
                         )
                     }
@@ -221,7 +222,7 @@ fun UserDetailScreen(
                         val repo = reposPager[index] ?: return@items
                         androidx.compose.material3.Card(
                             shape = RoundedCornerShape(16.dp),
-                            colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = Color.White),
+                            colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                             elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 1.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -240,7 +241,7 @@ fun UserDetailScreen(
                                         modifier = Modifier.weight(1f),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
-                                        color = Color(0xFF222222)
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Icon(
                                         Icons.Default.Star,
@@ -252,7 +253,7 @@ fun UserDetailScreen(
                                     Text("${repo.stars}", color = Color(0xFF888888), fontSize = 14.sp)
                                 }
                                 repo.language?.let {
-                                    Text(it, color = Color(0xFF1976D2), fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                                    Text(it, color = MaterialTheme.colorScheme.primary, fontSize = 13.sp, fontWeight = FontWeight.Medium)
                                 }
                                 repo.description?.let {
                                     Text(it, color = Color(0xFF888888), fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)

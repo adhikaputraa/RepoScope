@@ -51,6 +51,7 @@ import com.adhika.reposcope.R
 import com.adhika.reposcope.presentation.common.EmptyState
 import com.adhika.reposcope.presentation.common.ErrorState
 import com.adhika.reposcope.presentation.common.InlineErrorWithRetry
+import androidx.compose.material3.MaterialTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,20 +63,23 @@ fun UserListScreen(
     val errorMessage by viewModel.errorMessage.collectAsState()
     val pagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems()
 
+    val backgroundColor = MaterialTheme.colorScheme.background
+    val searchFieldColor = MaterialTheme.colorScheme.surfaceVariant
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("GitHub Users", color = Color.White) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF1976D2))
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
             )
         },
-        containerColor = Color(0xFFF7F7F8)
+        containerColor = backgroundColor
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(Color(0xFFF7F7F8))
+                .background(backgroundColor)
         ) {
             OutlinedTextField(
                 value = pendingQuery,
@@ -86,7 +90,7 @@ fun UserListScreen(
                     if (pendingQuery.isNotEmpty()) {
                         IconButton(onClick = { viewModel.onSearchQueryChanged("") }) {
                             Icon(
-                                imageVector = androidx.compose.material.icons.Icons.Default.Close,
+                                imageVector = Icons.Default.Close,
                                 contentDescription = "Clear search"
                             )
                         }
@@ -96,11 +100,11 @@ fun UserListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
-                    .background(Color.White, RoundedCornerShape(32.dp)),
+                    .background(searchFieldColor, RoundedCornerShape(32.dp)),
                 colors = androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color.White,
+                    containerColor = searchFieldColor,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedBorderColor = Color(0xFF1976D2)
+                    focusedBorderColor = MaterialTheme.colorScheme.primary
                 )
             )
 

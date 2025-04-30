@@ -1,7 +1,7 @@
 package com.adhika.reposcope.core
 
 import com.adhika.reposcope.data.repository.GitHubRepositoryImpl
-import com.adhika.reposcope.domain.GitHubRepository
+import com.adhika.reposcope.domain.repository.GitHubRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

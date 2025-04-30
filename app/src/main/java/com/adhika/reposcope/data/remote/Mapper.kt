@@ -1,8 +1,8 @@
 package com.adhika.reposcope.data.remote
 
-import com.adhika.reposcope.domain.GitHubRepo
-import com.adhika.reposcope.domain.GitHubUser
-import com.adhika.reposcope.domain.GitHubUserDetail
+import com.adhika.reposcope.domain.model.GitHubRepo
+import com.adhika.reposcope.domain.model.GitHubUser
+import com.adhika.reposcope.domain.model.GitHubUserDetail
 
 fun GitHubUserDto.toDomain() = GitHubUser(
     username = login,

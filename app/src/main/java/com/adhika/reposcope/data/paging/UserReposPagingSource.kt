@@ -4,11 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.adhika.reposcope.data.remote.GitHubApi
 import com.adhika.reposcope.data.remote.toDomain
-import com.adhika.reposcope.domain.GitHubRepo
+import com.adhika.reposcope.domain.model.GitHubRepo
 
 class UserReposPagingSource(
     private val api: GitHubApi,
-    private val username: String
+    private val username: String,
+    private val language: String? = null
 ) : PagingSource<Int, GitHubRepo>() {
 
     override fun getRefreshKey(state: PagingState<Int, GitHubRepo>): Int? {
@@ -22,8 +23,10 @@ class UserReposPagingSource(
         val page = params.key ?: 1
         return try {
             val response = api.getUserRepos(username, page, params.loadSize)
-            val repos = response.filter { !it.isForked }.map { it.toDomain() }
-            
+            val repos = response
+                .filter { !it.isForked }
+                .filter { language.isNullOrEmpty() || it.language == language }
+                .map { it.toDomain() }
             LoadResult.Page(
                 data = repos,
                 prevKey = if (page == 1) null else page - 1,

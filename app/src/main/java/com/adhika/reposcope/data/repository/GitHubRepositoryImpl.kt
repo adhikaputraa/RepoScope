@@ -7,10 +7,10 @@ import com.adhika.reposcope.data.paging.UserReposPagingSource
 import com.adhika.reposcope.data.paging.UserSearchPagingSource
 import com.adhika.reposcope.data.remote.GitHubApi
 import com.adhika.reposcope.data.remote.toDomain
-import com.adhika.reposcope.domain.GitHubRepo
-import com.adhika.reposcope.domain.GitHubRepository
-import com.adhika.reposcope.domain.GitHubUser
-import com.adhika.reposcope.domain.GitHubUserDetail
+import com.adhika.reposcope.domain.model.GitHubUser
+import com.adhika.reposcope.domain.model.GitHubRepo
+import com.adhika.reposcope.domain.model.GitHubUserDetail
+import com.adhika.reposcope.domain.repository.GitHubRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -48,13 +48,13 @@ class GitHubRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getUserReposPaging(username: String): Flow<PagingData<GitHubRepo>> {
+    override fun getUserReposPaging(username: String, language: String?): Flow<PagingData<GitHubRepo>> {
         return Pager(
             config = PagingConfig(
                 pageSize = DEFAULT_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { UserReposPagingSource(api, username) }
+            pagingSourceFactory = { UserReposPagingSource(api, username, language) }
         ).flow
     }
 

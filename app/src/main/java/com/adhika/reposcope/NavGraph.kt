@@ -10,13 +10,14 @@ import androidx.navigation.compose.rememberNavController
 fun AppNavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(navController, startDestination = "user_list") {
         composable("user_list") {
-            UserListScreen { username ->
-                navController.navigate("user_detail/$username")
+            UserListScreen { username, avatarUrl ->
+                navController.navigate("user_detail/$username?avatarUrl=$avatarUrl")
             }
         }
-        composable("user_detail/{username}") { backStackEntry ->
+        composable("user_detail/{username}?avatarUrl={avatarUrl}") { backStackEntry ->
             val username = backStackEntry.arguments?.getString("username") ?: return@composable
-            UserDetailScreen(username)
+            val avatarUrl = backStackEntry.arguments?.getString("avatarUrl")
+            UserDetailScreen( username = username, avatarUrl = avatarUrl, onBackClick = { navController.popBackStack() } )
         }
     }
 }

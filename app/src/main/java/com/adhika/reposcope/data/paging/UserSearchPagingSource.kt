@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.adhika.reposcope.data.remote.GitHubApi
 import com.adhika.reposcope.data.remote.toDomain
-import com.adhika.reposcope.domain.GitHubUser
+import com.adhika.reposcope.domain.model.GitHubUser
 
 class UserSearchPagingSource(
     private val api: GitHubApi,
